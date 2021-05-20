@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -19,16 +19,19 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const RegisterView = ({ onSubmit }) => {
-  const [email, setEmail] = useState();
-  const [name, setName] = useState();
-  const [password, setPassword] = useState();
+  const dispatch = useDispatch();
 
+  const [email, setEmail] = useState();
   const handleEmail = event => {
     setEmail(event.target.value);
   };
+
+  const [name, setName] = useState();
   const handleName = event => {
     setName(event.target.value);
   };
+
+  const [password, setPassword] = useState();
   const handlePass = event => {
     setPassword(event.target.value);
   };
@@ -42,7 +45,7 @@ const RegisterView = ({ onSubmit }) => {
       password,
     };
 
-    onSubmit(user);
+    dispatch(userOperations.register(user));
     reset();
   };
 
@@ -89,8 +92,4 @@ const RegisterView = ({ onSubmit }) => {
   );
 };
 
-const mapDispatchToProps = {
-  onSubmit: userOperations.register,
-};
-
-export default connect(null, mapDispatchToProps)(RegisterView);
+export default RegisterView;

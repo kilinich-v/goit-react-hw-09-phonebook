@@ -1,5 +1,4 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -26,8 +25,10 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const AppMenu = ({ isAuth }) => {
+const AppMenu = () => {
   const classes = useStyles();
+
+  const isAuth = useSelector(userSelectors.getAuthenticated);
 
   return (
     <div className={classes.dropdownRoot}>
@@ -85,8 +86,4 @@ const AppMenu = ({ isAuth }) => {
   );
 };
 
-const mapStateToProps = state => ({
-  isAuth: userSelectors.getAuthenticated(state),
-});
-
-export default connect(mapStateToProps)(AppMenu);
+export default AppMenu;

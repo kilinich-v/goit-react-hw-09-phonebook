@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -30,13 +30,18 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const App = ({ isAuth, getUser }) => {
+const App = () => {
   const classes = useStyles();
+
+  const isAuth = useSelector(userSelectors.getAuthenticated);
+  const dispatch = useDispatch();
+
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    getUser();
-  }, [getUser]);
+    dispatch(userOperations.getUser());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleClick = () => {
     setOpen(prev => !prev);
@@ -103,12 +108,4 @@ const App = ({ isAuth, getUser }) => {
   );
 };
 
-const mapStateToProps = state => ({
-  isAuth: userSelectors.getAuthenticated(state),
-});
-
-const mapDispatchToProps = {
-  getUser: userOperations.getUser,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;
